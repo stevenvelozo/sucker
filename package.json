@@ -1,0 +1,35 @@
+{
+  "name": "sucker",
+  "version": "1.0.0",
+  "description": "Suck arbitrary data from a stream, based on events and parsing.",
+  "main": "source/Sucker.js",
+  "scripts": {
+    "coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -u tdd -R spec",
+    "test": "./node_modules/mocha/bin/_mocha -u tdd -R spec",
+    "doc": "./node_modules/groc/bin/groc --index-page-title Overview ./README.md ./source/**/*.js ./source/*.js",
+    "doc-stage-retold": "./node_modules/groc/bin/groc --index-page-title Overview -o ../retold/fable ./README.md ./source/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevenvelozo/sucker.git"
+  },
+  "keywords": [
+    "queue"
+  ],
+  "author": "steven velozo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stevenvelozo/sucker/issues"
+  },
+  "homepage": "https://github.com/stevenvelozo/sucker#readme",
+  "devDependencies": {
+    "chai": "4.1.2",
+    "istanbul": "0.4.5",
+    "mocha": "5.0.1"
+  },
+  "dependencies": {
+    "fable": "^1.0.1",
+    "orator": "^1.0.22",
+    "underscore": "^1.8.3"
+  }
+}

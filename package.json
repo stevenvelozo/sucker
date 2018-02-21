@@ -28,6 +28,7 @@
     "mocha": "5.0.1"
   },
   "dependencies": {
+    "async": "^2.6.0",
     "fable": "^1.0.1",
     "orator": "^1.0.22",
     "underscore": "^1.8.3"

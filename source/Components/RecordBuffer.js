@@ -14,6 +14,11 @@ class RecordBuffer
 		this.fable = pFable;
 		this.webserver = pWebServer;
 	}
+
+	pushRecord(pEntity, pRecordGUID, pRecord)
+	{
+		
+	}
 }
 
 

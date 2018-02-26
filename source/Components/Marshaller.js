@@ -15,9 +15,13 @@ class Marshaller
 		this.webserver = pWebServer;
 	}
 
-	marshal(pChunk)
+	marshal(pChunk, pChunkMetadata)
 	{
-		
+		var tmpChunkMetadata = (typeof(pChunkMetadata) === 'undefined') ? {} : pChunkMetadata;
+
+		this.fable.log.trace('Marshalling chunk with default marshaller.');
+
+		this.fable.sucker.RecordBuffer.
 	}
 }
 

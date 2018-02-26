@@ -14,42 +14,99 @@ class EntityCache
 		this.fable = pFable;
 		this.webserver = pWebServer;
 
-		this.cacheData = {};
+		this.recordCache = {};
+		this.metaData = {};
 	}
 
-	// Add an entity record 
-	add(pEntity, pGUID, pRecord)
+	checkEntity(pEntity)
 	{
-		if (typeof(this.cacheData[pEntity]) !== 'object')
-			this.cacheData[pEntity] = {};
+		// Check if the entity type exists in the cache yet
+		if (typeof(this.recordCache[pEntity]) !== 'object')
+			this.recordCache[pEntity] = {};
 
-		this.cacheData[pEntity][pGUID] = pRecord;
+		// Check if the entity type exists in the metadata object yet
+		if (typeof(this.metaData[pEntity]) !== 'object')
+			this.metaData[pEntity] = {};
+
+		return true;
+	}
+
+	add(pEntity, pGUID, pRecord, pRecordMetadata)
+	{
+		this.checkEntity(pEntity);
+
+		// Always overwrite the record on an add operation
+		this.recordCache[pEntity][pGUID] = pRecord;
+
+		// Set the record metadata as well.
+		this.setMetadata(pRecordMetadata);
+
+		return true;
+	}
+
+	merge(pEntity, pGUID, pRecord, pRecordMetadata)
+	{
+		this.checkEntity(pEntity);
+
+		// Check if a record exists for this particular guid
+		if (!this.recordCache[pEntity].hasOwnProperty(pGUID))
+			this.recordCache[pEntity][pGUID] = {};
+
+		// Always merge metadata
+		libUnderscore.extend(this.recordCache[pEntity][pGUID], (typeof(pRecord) === 'undefined') ? {} : pRecord);
+
+		return true;
 	}
 
 	read(pEntity, pGUID)
 	{
-		if (typeof(this.cacheData[pEntity]) !== 'object')
+		if (typeof(this.recordCache[pEntity]) !== 'object')
 			return false;
 
-		if (typeof(this.cacheData[pEntity][pGUID]) !== 'object')
+		if (typeof(this.recordCache[pEntity][pGUID]) !== 'object')
 			return false;
 
-		return this.cacheData[pEntity][pGUID];
+		return this.recordCache[pEntity][pGUID];
+	}
+
+	setMetadata(pEntity, pGUID, pRecordMetadata)
+	{
+		this.checkEntity(pEntity);
+
+		// Check if metadata exists for this particular guid
+		if (!this.metaData[pEntity].hasOwnProperty(pGUID))
+			this.metaData[pEntity][pGUID] = {};
+
+		// Always merge metadata
+		libUnderscore.extend(this.metaData[pEntity][pGUID], (typeof(pRecordMetadata) === 'undefined') ? {} : pRecordMetadata);
+
+		return true;
+	}
+
+	readMetadata(pEntity, pGUID)
+	{
+		if (typeof(this.metaData[pEntity]) !== 'object')
+			return false;
+
+		if (typeof(this.metaData[pEntity][pGUID]) !== 'object')
+			return false;
+
+		return this.metaData[pEntity][pGUID];
 	}
 
 	clear()
 	{
-		this.cacheData = {};
+		this.recordCache = {};
 
 		return true;
 	}
 
 	clearEntity(pEntity)
 	{
-		if (typeof(this.cacheData[pEntity]) !== 'object')
+		if (typeof(this.recordCache[pEntity]) !== 'object')
 			return false;
 
-		this.cacheData[pEntity] = {};
+		this.recordCache[pEntity] = {};
 
 		return true;
 	}

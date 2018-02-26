@@ -31,12 +31,14 @@ class Sucker
 		this.webserver = libOrator.new(this.settings);
 		this.fable = this.webserver.fable;
 
-		this.ChunkSplitter = new (require(`${__dirname}/Components/ChunkSplitter.js`))(this.fable, this.webserver);
-		this.ChunkQueue = new (require(`${__dirname}/Components/ChunkQueue.js`))(this.fable, this.webserver);
-		this.Marshaller = new (require(`${__dirname}/Components/Marshaller.js`))(this.fable, this.webserver);
-		this.RecordBuffer = new (require(`${__dirname}/Components/RecordBuffer.js`))(this.fable, this.webserver);
-		this.RecordImporter = new (require(`${__dirname}/Components/RecordImporter.js`))(this.fable, this.webserver);
-		this.EntityCache = new (require(`${__dirname}/Components/EntityCache.js`))(this.fable, this.webserver);
+		this.fable.sucker = {};
+
+		this.fable.sucker.ChunkSplitter = new (require(`${__dirname}/Components/ChunkSplitter.js`))(this.fable, this.webserver);
+		this.fable.sucker.ChunkQueue = new (require(`${__dirname}/Components/ChunkQueue.js`))(this.fable, this.webserver);
+		this.fable.sucker.Marshaller = new (require(`${__dirname}/Components/Marshaller.js`))(this.fable, this.webserver);
+		this.fable.sucker.RecordBuffer = new (require(`${__dirname}/Components/RecordBuffer.js`))(this.fable, this.webserver);
+		this.fable.sucker.RecordImporter = new (require(`${__dirname}/Components/RecordImporter.js`))(this.fable, this.webserver);
+		this.fable.sucker.EntityCache = new (require(`${__dirname}/Components/EntityCache.js`))(this.fable, this.webserver);
 
 		this.fable.log.trace('Sucker initialized.');
 	}

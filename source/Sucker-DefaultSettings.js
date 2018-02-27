@@ -17,7 +17,10 @@ module.exports = (
 		Product: 'Meadow Sucker',
 		ProductVersion: require(`${__dirname}/../package.json`).version,
 
-		"APIServerPort": 8070,
+		APIServerPort: 8070,
+
+		// Whether or not to be very verbose
+		WriteTraceLogs: true,
 
 		// Defines what separates "lines" in the line-by-line parsing of the stream.  Defaults to cr/lf || cr || lf
 		SplitterChunkSeparator: null,
@@ -32,5 +35,6 @@ module.exports = (
 
 		// The number of records to batch write out at a time (should be < queue size)
 		RecordImporterWriteChunkSize: 200
+
 	}
 );

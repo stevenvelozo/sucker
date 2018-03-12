@@ -5,9 +5,9 @@
 var libUnderscore = require('underscore');
 
 /**
-* Sucker Stream Reader Base
+* Sucker Chunk Source Base
 */
-class Marshaller
+class ChunkSource
 {
 	constructor(pFable, pWebServer)
 	{
@@ -52,4 +52,4 @@ class Marshaller
 }
 
 
-module.exports = Marshaller;
+module.exports = ChunkSource;

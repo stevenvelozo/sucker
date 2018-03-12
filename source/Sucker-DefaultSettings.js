@@ -28,7 +28,7 @@ module.exports = (
 		// How many records to hold in a queue from the stream
 		ChunkQueueSize: 1000,
 		// If we should process the Chunk Queue in parallel or not
-		ChunkQueueParallel: false,
+		ChunkQueueParallel: 1,
 
 		// The number of records to queue for the marshaller
 		RecordBufferSize: 1000,

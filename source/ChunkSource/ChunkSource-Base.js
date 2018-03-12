@@ -14,7 +14,8 @@ class ChunkSource
 		this.fable = pFable;
 		this.webserver = pWebServer;
 
-		this.internalChunkIndex = 0;
+		this.sourceGUID = this.fable.getUUID();
+		this.currentSourceIndex = 0;
 	}
 
 	// djb2 ish hash function
@@ -40,14 +41,15 @@ class ChunkSource
 	marshal(pChunk, pChunkMetadata)
 	{
 		// If there is no passed in metadata, set the source to unknown and use the internal chunk index.
-		let tmpChunkMetadata = (typeof(pChunkMetadata) === 'undefined') ? {chunkIndex:this.internalChunkIndex++,chunkSource:'Unknown'} : pChunkMetadata;
+		let tmpChunkMetadata = (typeof(pChunkMetadata) === 'undefined') ? {ChunkSourceIndex:this.currentSourceIndex++,ChunkSourceGUID:this.sourceGUID,ChunkSourceType:'Unknown'} : pChunkMetadata;
 
-		let tmpChunkGUID = `${tmpChunkMetadata.chunkSource}-${tmpChunkMetadata.chunkIndex}`;
+		let tmpChunkGUID = `${tmpChunkMetadata.ChunkSourceType}-${tmpChunkMetadata.ChunkSourceGUID}-${tmpChunkMetadata.ChunkSourceIndex}`;
 
 		if (this.fable.settings.WriteTraceLogs)
 			this.fable.log.trace(`Marshalling chunk ${tmpChunkGUID} from ${tmpChunkMetadata.chunkSource} with default marshaller.`);
 
-		this.fable.sucker.RecordBuffer.pushRecord('RawChunk', tmpChunkGUID, {GUID:tmpChunkGUID,RawData:pChunk});
+		// By default the marshaller just creates a RawChunk record.
+		this.fable.sucker.RecordBuffer.pushRecord('RawChunk', tmpChunkGUID, {GUID:tmpChunkGUID, RawData:pChunk, MetaData:tmpChunkMetadata});
 	}
 }
 

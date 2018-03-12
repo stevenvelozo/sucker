@@ -10,9 +10,10 @@ var libOrator = require('orator');
 *
 * [Stream] -> [Splitter] -> [Chunk Queue] -> [Marshaller] -> [Record Queue] -> [Record Importer]
 *
-* Stream:          a stock node input stream for things like a file read
 *
-* Chunk Splitter:  breaks the Stream into Chunks
+* Chunk Source:    consists of a stream and a chunk splitter, to generate chunks
+* 	Stream:          a stock node input stream for things like a file read
+* 	Chunk Splitter:  breaks the Stream into Chunks
 * Chunk Queue:     a Queue of Chunks split from a stream (might be fifo or parallel)
 * Marshaller:      a method or set of methods for generating records based on State and a current Chunk
 *                  (the Marshaller manages internal state -- by default this is a simple decision tree)
@@ -33,7 +34,7 @@ class Sucker
 
 		this.fable.sucker = {};
 
-		this.fable.sucker.ChunkSplitter = new (require(`${__dirname}/Component/ChunkSplitter.js`))(this.fable, this.webserver);
+		this.fable.sucker.ChunkSource = new (require(`${__dirname}/Component/ChunkSource.js`))(this.fable, this.webserver);
 		this.fable.sucker.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this.fable, this.webserver);
 		this.fable.sucker.Marshaller = new (require(`${__dirname}/Component/Marshaller.js`))(this.fable, this.webserver);
 		this.fable.sucker.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this.fable, this.webserver);

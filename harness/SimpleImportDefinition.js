@@ -2,15 +2,15 @@
 	Sucker:
 	{
 		"Sources":
-		[
+		{
 			// On CSV Files Header:True and Header:1 are synonymous.
 			"ACPC_CSV": { Type:"CSV_File", File:`${__dirname}/Alcohol_Consumption_Per_Country.csv`, Header:true }
-		],
+		},
 
 		"Marshallers":
-		[
+		{
 			"ACPC_CSV": { Hash:'ACPC_CSV', Type:'AlcoholConsumptionPerCountry_CSV', Writer:'LocalMeadowEndpoints' }
-		],
+		},
 
 		"Writers":
 		{

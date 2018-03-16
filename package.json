@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "async": "^2.6.0",
+    "chance": "1.0.13",
     "fable": "^1.0.1",
     "orator": "^1.0.22",
     "underscore": "^1.8.3"

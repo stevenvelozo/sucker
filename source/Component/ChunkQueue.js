@@ -14,9 +14,6 @@ class ChunkQueue
 		this.fable = pFable;
 		this.webserver = pWebServer;
 
-		this.queueGUID = this.fable.getUUID();
-		this.currentQueueIndex = 0;
-
 		// Each Source can add functions to the queue empty event
 		this.emptyListeners = {};
 
@@ -28,22 +25,54 @@ class ChunkQueue
 		this.queue = libAsync.queue(
 			(pTaskData, fCallBack)=>
 			{
+				// Each source can marshal on one of three things.
+				// By default it marshals to itself.
+				// It can also go through mapped by the GUID, Type or Hash of another Source
 				this.fable.sucker.Marshaller.marshal(pTaskData.Chunk,pTaskData.Metadata);
 				fCallBack();
 			}
 		);
+
+		this.queue.empty = ()=>
+		{
+			this.processEmptyEvents();
+		};
 
 		this.queue.concurrency = this.fable.settings.queueParallel;
 	}
 
 	pushChunk(pChunk, pChunkMetadata, fCallBack)
 	{
-		return this.queue.push({Chunk:pChunk, Metadata:libUnderscore.extend({ChunkQueueIndex:++this.currentQueueIndex,ChunkQueueGUID:this.queueGUID}, pChunkMetadata)}, fCallBack);
+		return this.queue.push(
+			{
+				Chunk:pChunk, 
+				Metadata:libUnderscore.extend(
+					{
+						ChunkQueueIndex:++this.currentQueueIndex,
+						ChunkQueueGUID:this.queueGUID
+					}, pChunkMetadata)
+			}, fCallBack);
 	}
 
-	emptyEvent()
+	processEmptyEvents()
 	{
+		var tmpListeners = Object.keys(this.emptyListeners);
 
+		// This should be asynchronous
+		for (let i = 0; i < tmpListeners.length; i++)
+		{
+			this.fable.log.trace(`Calling empty listener ${i}`);
+			this.emptyListeners[tmpListeners[i]](
+				()=>
+				{ 
+					delete this.emptyListeners[tmpListeners[i]];
+				});
+			// Now delete the listener.
+			// TODO: Research what happens if the function property is deleted while the task is still running.
+			
+		}
+
+		return true;
 	}
 }
 

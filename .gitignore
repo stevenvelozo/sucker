@@ -59,3 +59,6 @@ typings/
 
 # test harness staging folder
 stage
+
+# Mac crap
+.DS_Store

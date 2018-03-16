@@ -26,35 +26,52 @@ var libOrator = require('orator');
 */
 class Sucker
 {
-	constructor(pSettings)
+	constructor(pSettings, pOrator)
 	{
 		// The settings object.
 		this.settings = libUnderscore.extend(require(`${__dirname}/Sucker-DefaultSettings.js`), pSettings);
 
-		this.webserver = libOrator.new(this.settings);
+		// Allow the passing in of an orator object?
+		this.webserver = (typeof(pOrator) === 'undefined') ? libOrator.new(this.settings) : pOrator;
 		this.fable = this.webserver.fable;
 
-		this.fable.sucker = {};
+
+		this.defaultChunkSourceConfig = require(`${__dirname}/ChunkSource/ChunkSource-Config-Default.js`);
 
 		// There can be multiple sources for the importer;
 		// This allows the marshaller to happen on records once they have been pulled in from chunks at different sources.
 		// This also means that the Marshallers will *have* to conform to consisten schema across marshalled records.
 //		this.fable.sucker.ChunkSource = new (require(`${__dirname}/Component/ChunkSource.js`))(this.fable, this.webserver);
-		this.fable.sucker.ChunkSources = {};
-		this.fable.sucker.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this.fable, this.webserver);
-		this.fable.sucker.Marshaller = new (require(`${__dirname}/Component/Marshaller.js`))(this.fable, this.webserver);
-		this.fable.sucker.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this.fable, this.webserver);
-		this.fable.sucker.RecordImporter = new (require(`${__dirname}/Component/RecordImporter.js`))(this.fable, this.webserver);
-		this.fable.sucker.EntityCache = new (require(`${__dirname}/Component/EntityCache.js`))(this.fable, this.webserver);
+		this.ChunkSources = {};
+		this.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this.fable, this.webserver);
+		this.Marshaller = new (require(`${__dirname}/Component/Marshaller.js`))(this.fable, this.webserver);
+		this.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this.fable, this.webserver);
+		this.RecordImporter = new (require(`${__dirname}/Component/RecordImporter.js`))(this.fable, this.webserver);
+		this.EntityCache = new (require(`${__dirname}/Component/EntityCache.js`))(this.fable, this.webserver);
 
-		this.fable.sucker.Statistics = new (require(`${__dirname}/Component/Statistics.js`))(this.fable, this.webserver);
+		this.Statistics = new (require(`${__dirname}/Component/Statistics.js`))(this.fable, this.webserver);
+
+		this.fable.sucker = this;
 
 		this.fable.log.trace('Sucker initialized.');
 	}
 
-	addSource(pSource)
+	addSource(pSourceHash, pSourceConfig)
 	{
+		if (typeof(pSourceHash) !== 'string')
+		{
+			this.fable.log.warn(`Could not initialize chunk source.  Invalid SourceHash type.  Hashes must be a string.`);
+			return false;
+		}
+		if (typeof(pSourceConfig) !== 'object')
+		{
+			this.fable.log.warn(`Could not initialize chunk source.  Invalid SourceConfig type.  Configs must be an object.`);
+			return false;
+		}
 
+		let tmpSourceConfig = libUnderscore.extend(this.defaultChunkSourceConfig, pSourceConfig);
+
+		return true;
 	}
 
 	// Philosophical question: should you be able to map a source to more than one marshaller?  That might be really cool.

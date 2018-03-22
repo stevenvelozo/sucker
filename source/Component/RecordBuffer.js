@@ -9,10 +9,10 @@ var libUnderscore = require('underscore');
 */
 class RecordBuffer
 {
-	constructor(pFable, pWebServer)
+	constructor(pSucker)
 	{
-		this.fable = pFable;
-		this.webserver = pWebServer;
+		this.fable = pSucker.Fable;
+		//this.webserver = pWebServer;
 	}
 
 	pushRecord(pEntity, pRecordGUID, pRecord)

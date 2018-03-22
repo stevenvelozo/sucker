@@ -13,9 +13,10 @@ var libChance = require('chance');
 */
 class ChunkSource extends ChunkSourceBase
 {
-	constructor(pFable, pWebServer)
+	constructor(pSucker)
 	{
-		super(pFable, pWebServer);
+		this.fable = pSucker.Fable;
+		super(pSucker);
 
 		this.sourceType = 'RandomNoise';
 

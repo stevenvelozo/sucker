@@ -43,6 +43,10 @@ class Sucker
 		// This also means that the Marshallers will *have* to conform to consisten schema across marshalled records.
 //		this.fable.sucker.ChunkSource = new (require(`${__dirname}/Component/ChunkSource.js`))(this.fable, this.webserver);
 		this.ChunkSources = {};
+		// Simple indexes for types/names -> GUIDs
+		this.ChunkSourceTypes = {};
+		this.ChunkSourceHashes = {};
+
 		this.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this.fable, this.webserver);
 		this.Marshaller = new (require(`${__dirname}/Component/Marshaller.js`))(this.fable, this.webserver);
 		this.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this.fable, this.webserver);
@@ -55,7 +59,7 @@ class Sucker
 
 		this.fable.log.trace('Sucker initialized.');
 	}
-
+	
 	addSource(pSourceHash, pSourceConfig)
 	{
 		if (typeof(pSourceHash) !== 'string')
@@ -70,6 +74,25 @@ class Sucker
 		}
 
 		let tmpSourceConfig = libUnderscore.extend(this.defaultChunkSourceConfig, pSourceConfig);
+		
+		if (this.ChunkSources.hasOwnProperty(pSourceHash))
+			this.fable.log.warn(`Re-initializing chunk source ${pSourceHash}.  This can have unintended side effects if the other source is already processing, as it does not stop the old source.`);
+
+		let tmpChunkSource = false;
+		try
+		{
+			tmpChunkSource = require(`${__dirname}/ChunkSource/ChunkSource-Stream-${pSourceConfig.Type}.js`)(pSourceHash, tmpSourceConfig);
+		}
+		catch(pError)
+		{
+			// Oh shit, something didn't work.
+			this.fable.log.error(`Error initializing chunk source.  Most likely invalid type specified [${tmpSourceConfig.Type}]: ${pError}`);
+			tmpChunkSource = require(`${__dirname}/ChunkSource/ChunkSource-Stream-Default.js`)(pSourceHash, tmpSourceConfig);
+		}
+
+		this.ChunkSources[tmpChunkSource.sourceGUID] = tmpChunkSource;
+		this.ChunkSourceHashes[pSourceHash] = tmpChunkSource.sourceGUID;
+		this.ChunkSourceTypes[tmpChunkSource.sourceType] = tmpChunkSource.sourceGUID;
 
 		return true;
 	}

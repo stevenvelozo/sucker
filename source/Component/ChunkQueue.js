@@ -9,10 +9,10 @@ var libAsync = require('async');
 */
 class ChunkQueue
 {
-	constructor(pFable, pWebServer)
+	constructor(pSucker)
 	{
-		this.fable = pFable;
-		this.webserver = pWebServer;
+		this.fable = pSucker.Fable;
+		//this.webserver = pWebServer;
 
 		// Each Source can add functions to the queue empty event
 		this.emptyListeners = {};

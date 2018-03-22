@@ -8,14 +8,16 @@
 */
 class ChunkSource
 {
-	constructor(pFable, pWebServer)
+	constructor(pHash, pSucker)
 	{
-		this.fable = pFable;
-		this.webserver = pWebServer;
+		this.fable = pSucker.Fable;
+		//this.webserver = pWebServer;
 
 		this.running = false;
 
 		this.sourceType = 'Unknown';
+		
+		this.sourceHash = pHash;
 
 		this.sourceGUID = this.fable.getUUID();
 		this.currentSourceIndex = 0;

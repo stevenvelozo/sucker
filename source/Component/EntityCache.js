@@ -9,10 +9,10 @@ var libUnderscore = require('underscore');
 */
 class EntityCache
 {
-	constructor(pFable, pWebServer)
+	constructor(pSucker)
 	{
-		this.fable = pFable;
-		this.webserver = pWebServer;
+		this.fable = pSucker.Fable;
+		//this.webserver = pWebServer;
 
 		this.recordCache = {};
 		this.metaData = {};

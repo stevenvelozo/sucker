@@ -9,10 +9,10 @@ var libQuantifier = require('quantifier');
 */
 class Statistics
 {
-	constructor(pFable, pWebServer)
+	constructor(pSucker)
 	{
-		this.fable = pFable;
-		this.webserver = pWebServer;
+		this.fable = pSucker.Fable;
+		//this.webserver = pWebServer;
 
 		this.sets = {};
 		this.setNames = [];

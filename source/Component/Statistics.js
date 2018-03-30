@@ -11,7 +11,7 @@ class Statistics
 {
 	constructor(pSucker)
 	{
-		this.fable = pSucker.Fable;
+		this.fable = pSucker.fable;
 		//this.webserver = pWebServer;
 
 		this.sets = {};

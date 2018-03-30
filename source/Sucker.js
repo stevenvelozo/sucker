@@ -47,13 +47,12 @@ class Sucker
 		this.ChunkSourceTypes = {};
 		this.ChunkSourceHashes = {};
 
-		this.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this.fable, this.webserver);
-		this.Marshaller = new (require(`${__dirname}/Component/Marshaller.js`))(this.fable, this.webserver);
-		this.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this.fable, this.webserver);
-		this.RecordImporter = new (require(`${__dirname}/Component/RecordImporter.js`))(this.fable, this.webserver);
-		this.EntityCache = new (require(`${__dirname}/Component/EntityCache.js`))(this.fable, this.webserver);
+		this.ChunkQueue = new (require(`${__dirname}/Component/ChunkQueue.js`))(this);
+		this.RecordBuffer = new (require(`${__dirname}/Component/RecordBuffer.js`))(this);
+		this.RecordImporter = new (require(`${__dirname}/Component/RecordImporter.js`))(this);
+		this.EntityCache = new (require(`${__dirname}/Component/EntityCache.js`))(this);
 
-		this.Statistics = new (require(`${__dirname}/Component/Statistics.js`))(this.fable, this.webserver);
+		this.Statistics = new (require(`${__dirname}/Component/Statistics.js`))(this);
 
 		this.fable.sucker = this;
 

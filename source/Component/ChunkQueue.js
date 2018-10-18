@@ -11,7 +11,7 @@ class ChunkQueue
 {
 	constructor(pSucker)
 	{
-		this.fable = pSucker.Fable;
+		this.fable = pSucker.fable;
 		//this.webserver = pWebServer;
 
 		// Each Source can add functions to the queue empty event

@@ -1,0 +1,22 @@
+version: '2.0'
+services:
+  sucker_mysql_server:
+    image: mysql:5.7
+    container_name: sucker_mysql_server
+    environment:
+    environment:
+      MYSQL_ROOT_PASSWORD: "wfp9005z"
+      MYSQL_DATABASE: "mutination"
+      MYSQL_USER: "robot"
+      MYSQL_PASSWORD: "wfp9005z"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: always
+    networks:
+      - backplane
+
+networks:
+  backplane:
+    driver: bridge

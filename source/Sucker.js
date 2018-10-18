@@ -12,7 +12,7 @@ var libOrator = require('orator');
 *
 *
 * Chunk Source:    consists of a stream and a chunk splitter, to generate chunks
-*.                 (Sources have a GUID, a Type and a Hash -- all three are valid reference methods)
+*                  (Sources have a GUID, a Type and a Hash -- all three are valid reference methods)
 *                  (The Hash is defined in the JSON configuration object, or programmatically when a source is added)
 * 	Stream:          a stock node input stream for things like a file read
 * 	Chunk Splitter:  breaks the Stream into Chunks
